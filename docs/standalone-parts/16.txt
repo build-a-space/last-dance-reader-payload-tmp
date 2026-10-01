@@ -35,7 +35,35 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
         } catch (e) {}
       }
       (function restoreThemeEarly() {
-        ent, tag, text, className) {
+        const prefs = loadPrefs();
+        document.body.classList.toggle('high-contrast', !!prefs.highContrast);
+      })();
+      (function injectReaderUxStyles() {
+        if (document.getElementById('reader-ux-v1')) return;
+        const s = document.createElement('style');
+        s.id = 'reader-ux-v1';
+        s.textContent = '.chapter-body{color:var(--ink)}.chapter-continue{display:flex;justify-content:center;margin:1.5rem 0 0}.chapter-continue .cover-cta{font-size:.98rem;padding:.75rem 1.35rem}.cover-cta.secondary{margin-top:.85rem;background:transparent;color:var(--ink);border:1px solid var(--border);box-shadow:none}.cover-cta.secondary:hover{background:var(--soft);border-color:rgba(201,164,108,.4);filter:none}';
+        document.head.appendChild(s);
+      })();
+
+
+      function inlineMarkup(text) {
+        const fragment = document.createDocumentFragment();
+        const re = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
+        let last = 0, match;
+        while ((match = re.exec(text)) !== null) {
+          if (match.index > last) fragment.append(document.createTextNode(text.slice(last, match.index)));
+          const token = match[0];
+          const node = document.createElement(token.startsWith('**') ? 'strong' : 'em');
+          node.textContent = token.slice(token.startsWith('**') ? 2 : 1, token.startsWith('**') ? -2 : -1);
+          fragment.append(node);
+          last = match.index + token.length;
+        }
+        if (last < text.length) fragment.append(document.createTextNode(text.slice(last)));
+        return fragment;
+      }
+
+      function addText(parent, tag, text, className) {
         const node = document.createElement(tag);
         if (className) node.className = className;
         node.textContent = text || '';
@@ -55,6 +83,14 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
         addText(cover, 'p', `${book.chapters.length} chapters`, 'cover-note');
         const begin = addText(cover, 'button', 'Begin reading', 'cover-cta');
         begin.type = 'button'; begin.addEventListener('click', () => goTo(1));
+        const prefs = loadPrefs();
+        const resumeAt = Math.max(0, Math.min(book.chapters.length, prefs.pageIndex|0));
+        if (resumeAt > 0) {
+          const ch = book.chapters[resumeAt - 1];
+          const resume = addText(cover, 'button', `Resume Chapter ${ch.number}`, 'cover-cta secondary');
+          resume.type = 'button';
+          resume.addEventListener('click', () => goTo(resumeAt));
+        }
         addText(cover, 'p', 'Use ← →, Page Up/Down, Home/End, or swipe to turn pages.', 'cover-hint');
         els.page.append(cover);
       }
@@ -77,6 +113,21 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
         });
         wrap.append(body);
         addText(wrap, 'p', '◆', 'chapter-end');
+        const continueWrap = document.createElement('div'); continueWrap.className = 'chapter-continue';
+        const isLast = pageIndex >= book.chapters.length;
+        let label, target;
+        if (isLast) {
+          label = 'Back to cover';
+          target = 0;
+        } else {
+          const next = book.chapters[pageIndex];
+          label = `Continue to Chapter ${next.number} · ${next.title} →`;
+          target = pageIndex + 1;
+        }
+        const cta = addText(continueWrap, 'button', label, 'cover-cta');
+        cta.type = 'button';
+        cta.addEventListener('click', () => goTo(target));
+        wrap.append(continueWrap);
         els.page.append(wrap);
       }
 
@@ -94,6 +145,7 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
         els.page.scrollTop = 0;
         document.title = pageIndex === 0 ? book.title : `${book.chapters[pageIndex - 1].title} — ${book.title}`;
         buildToc();
+        savePrefs();
       }
 
       function goTo(target) {
@@ -133,49 +185,4 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
         const batchSize = 8;
         for (let start = 0; start < CHUNK_COUNT; start += batchSize) {
           const slice = Array.from({ length: Math.min(batchSize, CHUNK_COUNT - start) }, (_, j) => start + j);
-          const responses = await Promise.all(slice.map(i => fetch(`${CHUNK_BASE}${String(i).padStart(3, '0')}.txt`, { cache: 'force-cache' })));
-          const failed = responses.findIndex(r => !r.ok);
-          if (failed !== -1) throw new Error(`Payload chunk ${String(slice[failed]).padStart(3, '0')} failed (${responses[failed].status})`);
-          parts.push(...(await Promise.all(responses.map(r => r.text()))));
-          els.topProgress.textContent = `Loading book… ${Math.min(start + batchSize, CHUNK_COUNT)}/${CHUNK_COUNT}`;
-        }
-        const b64 = parts.join('').replace(/\s/g, '');
-        const binary = atob(b64); const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
-        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-        return JSON.parse(await new Response(stream).text());
-      }
-
-      async function loadEmbedded() {
-        const binary = atob(EMBEDDED_BOOK_GZ_B64);
-        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
-        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-        return JSON.parse(await new Response(stream).text());
-      }
-      async function loadBook() {
-        try {
-          if (typeof EMBEDDED_BOOK_GZ_B64 === 'string' && EMBEDDED_BOOK_GZ_B64.length > 100) {
-            book = await loadEmbedded();
-          } else {
-            throw new Error('no embed');
-          }
-        } catch (embedError) {
-          try {
-            let response = await fetch('./book.json', { cache: 'no-cache' });
-            if (!response.ok) throw new Error('local book.json unavailable');
-            book = await response.json();
-          } catch (localError) {
-            try { book = await decodeChunks(); }
-            catch (chunkError) {
-              throw new Error('Could not load the book (embed/local/chunks all failed).');
-            }
-          }
-        }
-        if (!book || !Array.isArray(book.chapters) || book.chapters.length !== 32) throw new Error('Book data is incomplete: expected 32 chapters.');
-        render();
-      }
-
-      els.prev.addEventListener('click', () => goTo(pageIndex - 1)); els.next.addEventListener('click', () => goTo(pageIndex + 1));
-      els.footerPrev.addEventListener('click', () => goTo(pageIndex - 1)); els.footerNext.addEventListener('click', () => goTo(pageIndex + 1));
-      els.tocOpen.addEventListener('click', openToc
+     
