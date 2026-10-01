@@ -1,5 +1,53 @@
-); els.tocClose.addEventListener('click', closeToc); els.tocBackdrop.addEventListener('click', e => { if (e.target === els.tocBackdrop) closeToc(); });
-      els.theme.addEventListener('click', () => document.body.classList.toggle('high-contrast'));
+iled = responses.findIndex(r => !r.ok);
+          if (failed !== -1) throw new Error(`Payload chunk ${String(slice[failed]).padStart(3, '0')} failed (${responses[failed].status})`);
+          parts.push(...(await Promise.all(responses.map(r => r.text()))));
+          els.topProgress.textContent = `Loading book… ${Math.min(start + batchSize, CHUNK_COUNT)}/${CHUNK_COUNT}`;
+        }
+        const b64 = parts.join('').replace(/\s/g, '');
+        const binary = atob(b64); const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return JSON.parse(await new Response(stream).text());
+      }
+
+      async function loadEmbedded() {
+        const binary = atob(EMBEDDED_BOOK_GZ_B64);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return JSON.parse(await new Response(stream).text());
+      }
+      async function loadBook() {
+        try {
+          if (typeof EMBEDDED_BOOK_GZ_B64 === 'string' && EMBEDDED_BOOK_GZ_B64.length > 100) {
+            book = await loadEmbedded();
+          } else {
+            throw new Error('no embed');
+          }
+        } catch (embedError) {
+          try {
+            let response = await fetch('./book.json', { cache: 'no-cache' });
+            if (!response.ok) throw new Error('local book.json unavailable');
+            book = await response.json();
+          } catch (localError) {
+            try { book = await decodeChunks(); }
+            catch (chunkError) {
+              throw new Error('Could not load the book (embed/local/chunks all failed).');
+            }
+          }
+        }
+        if (!book || !Array.isArray(book.chapters) || book.chapters.length !== 32) throw new Error('Book data is incomplete: expected 32 chapters.');
+        const prefs = loadPrefs();
+        const maxPage = book.chapters.length;
+        pageIndex = Math.max(0, Math.min(maxPage, prefs.pageIndex|0));
+        document.body.classList.toggle('high-contrast', !!prefs.highContrast);
+        render();
+      }
+
+      els.prev.addEventListener('click', () => goTo(pageIndex - 1)); els.next.addEventListener('click', () => goTo(pageIndex + 1));
+      els.footerPrev.addEventListener('click', () => goTo(pageIndex - 1)); els.footerNext.addEventListener('click', () => goTo(pageIndex + 1));
+      els.tocOpen.addEventListener('click', openToc); els.tocClose.addEventListener('click', closeToc); els.tocBackdrop.addEventListener('click', e => { if (e.target === els.tocBackdrop) closeToc(); });
+      els.theme.addEventListener('click', () => { document.body.classList.toggle('high-contrast'); savePrefs(); });
       window.addEventListener('keydown', e => {
         if (!els.tocBackdrop.hidden) { if (e.key === 'Escape') closeToc(); return; }
         if (['INPUT', 'TEXTAREA', 'BUTTON'].includes(document.activeElement?.tagName) && e.key !== 'Escape') return;
