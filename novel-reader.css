@@ -1,1 +1,425 @@
-test-content-for-reader-css
+
+/* ===== Last Dance ebook reader ===== */
+.novel-shell {
+  --novel-bg: #0f0e0c;
+  --novel-page: #161410;
+  --novel-ink: #ebe4d6;
+  --novel-muted: #a89f8e;
+  --novel-accent: #c9a46c;
+  --novel-accent-soft: rgba(201, 164, 108, 0.18);
+  --novel-border: rgba(232, 220, 196, 0.12);
+  --novel-serif: "Literata", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --novel-display: "Cormorant Garamond", "Literata", Georgia, serif;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 164, 108, 0.12), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(80, 50, 90, 0.18), transparent 50%),
+    var(--novel-bg);
+  color: var(--novel-ink);
+  font-family: var(--novel-serif);
+}
+
+.novel-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--novel-border);
+  backdrop-filter: blur(8px);
+  background: rgba(15, 14, 12, 0.72);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.novel-topbar-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.novel-topbar-title {
+  font-family: var(--novel-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.novel-topbar-progress {
+  font-size: 0.75rem;
+  color: var(--novel-muted);
+}
+
+.novel-topbar-spacer {
+  width: 2.25rem;
+}
+
+.novel-icon-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--novel-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--novel-ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+.novel-icon-btn:hover {
+  background: var(--novel-accent-soft);
+  border-color: rgba(201, 164, 108, 0.35);
+}
+
+.novel-progress-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.novel-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b6b3a, var(--novel-accent));
+  transition: width 0.25s ease;
+}
+
+.novel-stage {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0.25rem;
+  padding: 0.75rem 0.35rem 0.5rem;
+  min-height: 0;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.novel-stage.is-exit-left {
+  transform: translateX(-18px);
+  opacity: 0.35;
+}
+.novel-stage.is-exit-right {
+  transform: translateX(18px);
+  opacity: 0.35;
+}
+
+.novel-nav {
+  align-self: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--novel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--novel-ink);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0 0 0.15rem;
+}
+.novel-nav:hover:not(:disabled) {
+  background: var(--novel-accent-soft);
+  border-color: rgba(201, 164, 108, 0.4);
+  color: var(--novel-accent);
+}
+.novel-nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+@media (max-width: 640px) {
+  .novel-nav {
+    display: none;
+  }
+  .novel-stage {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 0.75rem;
+  }
+}
+
+.novel-page {
+  max-width: 42rem;
+  width: 100%;
+  margin-inline: auto;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 235, 0.03), transparent 30%),
+    var(--novel-page);
+  border: 1px solid var(--novel-border);
+  border-radius: 1rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  max-height: calc(100dvh - 8.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+.novel-page.is-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.75rem;
+}
+
+.cover {
+  text-align: center;
+  max-width: 28rem;
+  position: relative;
+}
+.cover-ornament {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #f0d9a8, #c9a46c 45%, #6b4a28 100%);
+  box-shadow:
+    0 0 0 8px rgba(201, 164, 108, 0.12),
+    0 0 40px rgba(201, 164, 108, 0.25);
+}
+.cover-kicker {
+  font-family: var(--novel-display);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  color: var(--novel-accent);
+  margin-bottom: 0.85rem;
+}
+.cover-title {
+  font-family: var(--novel-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  margin: 0;
+  color: #f5ead6;
+}
+.cover-rule {
+  width: 4rem;
+  height: 1px;
+  margin: 1.25rem auto;
+  background: linear-gradient(90deg, transparent, var(--novel-accent), transparent);
+}
+.cover-author {
+  font-family: var(--novel-display);
+  font-size: 1.25rem;
+  color: var(--novel-muted);
+  margin-bottom: 1.25rem;
+}
+.cover-blurb {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #d8cfbf;
+  margin-bottom: 1rem;
+}
+.cover-note {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--novel-muted);
+  margin-bottom: 1.75rem;
+}
+.cover-cta {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d4b078, #a67c3d);
+  color: #1a140c;
+  font-family: var(--novel-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 30px rgba(166, 124, 61, 0.35);
+}
+.cover-cta:hover {
+  filter: brightness(1.06);
+}
+.cover-hint {
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  color: var(--novel-muted);
+}
+
+.chapter {
+  padding: 2rem 1.6rem 2.5rem;
+}
+@media (min-width: 640px) {
+  .chapter {
+    padding: 2.5rem 2.4rem 3rem;
+  }
+}
+.chapter-head {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--novel-border);
+}
+.chapter-label {
+  font-family: var(--novel-display);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--novel-accent);
+  margin-bottom: 0.5rem;
+}
+.chapter-title {
+  font-family: var(--novel-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4vw, 2.15rem);
+  line-height: 1.2;
+  margin: 0 0 0.65rem;
+  color: #f3e8d4;
+}
+.chapter-meta {
+  font-size: 0.85rem;
+  color: var(--novel-muted);
+  font-style: italic;
+}
+.chapter-body {
+  font-size: clamp(1.05rem, 1.8vw, 1.15rem);
+  line-height: 1.8;
+  max-width: 38rem;
+  margin-inline: auto;
+}
+.chapter-body p {
+  margin: 0 0 1.15em;
+  text-indent: 1.35em;
+}
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+.chapter-body p:first-child::first-letter {
+  font-family: var(--novel-display);
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.8;
+  padding: 0.08em 0.08em 0 0;
+  color: var(--novel-accent);
+  font-weight: 600;
+}
+.chapter-body em {
+  font-style: italic;
+  color: #f0e6d4;
+}
+.chapter-body strong {
+  font-weight: 600;
+  color: #f5ead6;
+}
+.chapter-end {
+  text-align: center;
+  color: var(--novel-accent);
+  margin-top: 2rem;
+  opacity: 0.7;
+  letter-spacing: 0.3em;
+}
+
+.novel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1rem 0.9rem;
+  border-top: 1px solid var(--novel-border);
+  background: rgba(15, 14, 12, 0.85);
+}
+.novel-footer-btn {
+  appearance: none;
+  border: 1px solid var(--novel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--novel-ink);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  font-family: var(--novel-display);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.novel-footer-btn:hover:not(:disabled) {
+  background: var(--novel-accent-soft);
+  border-color: rgba(201, 164, 108, 0.35);
+}
+.novel-footer-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.novel-footer-page {
+  font-size: 0.8rem;
+  color: var(--novel-muted);
+  letter-spacing: 0.06em;
+}
+
+.novel-toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 40;
+  display: flex;
+  justify-content: flex-start;
+}
+.novel-toc {
+  width: min(22rem, 92vw);
+  height: 100%;
+  background: #14120f;
+  border-right: 1px solid var(--novel-border);
+  overflow-y: auto;
+  padding: 1rem 0.75rem 2rem;
+  box-shadow: 20px 0 60px rgba(0, 0, 0, 0.4);
+}
+.novel-toc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem 1rem;
+}
+.novel-toc-head h2 {
+  font-family: var(--novel-display);
+  font-size: 1.35rem;
+  margin: 0;
+}
+.novel-toc-item {
+  width: 100%;
+  display: flex;
+  gap: 0.75rem;
+  text-align: left;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--novel-ink);
+  padding: 0.7rem 0.65rem;
+  border-radius: 0.65rem;
+  cursor: pointer;
+  align-items: flex-start;
+}
+.novel-toc-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.novel-toc-item.is-active {
+  background: var(--novel-accent-soft);
+}
+.novel-toc-num {
+  flex: 0 0 1.75rem;
+  font-family: var(--novel-display);
+  color: var(--novel-accent);
+  font-size: 0.95rem;
+  padding-top: 0.1rem;
+}
+.novel-toc-item strong {
+  display: block;
+  font-family: var(--novel-display);
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+.novel-toc-item em {
+  display: block;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--novel-muted);
+  margin-top: 0.15rem;
+}
