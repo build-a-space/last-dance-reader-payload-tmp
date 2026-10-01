@@ -1,0 +1,173 @@
+G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtRRDtljtf0RY1rGjQKvs27XB5875Pt27czFc4Nj1c3j9UJQqvg7Qx0enoXFXNiTafGnHxWaekncDNJLvczZNyzMtU9ap+ZyRNpwaWCYa3X8db9Cp4Y2xSSLIDh2gey42NAJyPIKrWVyW3AxdWHXi0vHTS1gj6vIP24zSMOeHLLvWHJZlaonRJbWlS6pQU9pKEVy820JXzjY/LsVniWKq0DK7ALHLJHM7NgLsMVNLqEKZAzHjdIh0vm0R9qRy/3oalm1wfJplvozyEutDP4s7c9u5bVQ7s7KCGrJD7Rweu9uva/PMLBINr7vBOHj0HtQODdOcsk+Q9xdokPVCO42PWns7ambLn1dFI2hl+M+0wUq/r3gNZ/Sk2m+kmmERFm9bbzY9q08hY9OYUg9dfD+n5I27VPzx0T4enZZv5aPldkv92TI5WYKWhsKZqGd24pdM1n4krHaTNLOLRWX5mhjq2iI8x3cR6y3ElwsKnZuBeejRcoA1qw6fsYqZQaVQOzMzwJBSU7mbCggbF78RloJaqZ4BPJRXEsTYeq07Lv9bHQhnpWbVxOH61T7G6rrhDw1HUrN6UZt/Op4c/824/YkQvu3xSPtnDnFP7OPqOe1I3EWOt6FEHBtmTXr5HU80SAX0eaxyiosyAGx2eHFiaffWX3k9zpJjp0Q/HGx3EpswWzPpgp9PyqUihaVibXJ43HqJ3qBhz8XN/PQ5sx6goBrhwt+XpDlEWPovDE5JFVbPYLadB2mBUe52s+0e7NCgPlxWPnoZ0zkpQKYFH1b+4BcRbQXqSL4RN58irqPABGjAdayaso+sx7GFnZuX2uXASK0h3rdR11W329q+9VJoe679I1Bv/udq/7GnOPt2gd976dZK+/3mN5USKkDVHFqdGdn0xT+AXLQ5N1l7Ox5mhjHWVXioY9yvB+4hWzIMcQ+kOCnAMxMgzWCxkF/Gyhr2ZlNDBJuWtOIz2ie+2W06vqCRZ48pbQIzC3+uvuJ5otb42RKQNrBNRrkw1Uk0z5vAydjjK0i0L67ckIOMwLRcbcZrL5hFJBT5fiqx5uCy04zQRH05fojWdu+0lQ4MLKGx0cyuJV4TPGjKmKWYj66a9NOyPyNQUnuPICKFLsbvmQ3d/IasmGropodGwwm4wswwSOvBMQmtkbGbVnEu+UMN5R/ZTdZ40AlIN4Uake9WnLgIvqabj/YHrMjAaEEJ/ftZlLG9+KcfW9LGcrzBCmJbzRHv5Kytcg7rQmtqjr6lPFfVpWIxGWs0kRJBgiR+axgviIQ6QSD1pdTBXrPvRClgNHQESQi2JjzG1snU+x33uJtEhMrHy2A8DRUkC3ep1PF1fyyYCHULGMZlSAM6oJaKHIkQj+X3zIRAjUvmHlwSTCeLwzow9eBCZUXWXUkr8K3gBr8EZjlPCJa40/9j6SrlETSlb0o5n/tznOCr3Wf4T6REPTOo0b2RM60PMpAG2KRkCsMgnN9EkttWmY48lt2RkkH1HJycCCbPr4GqCc5XS0PcJ8kr5OHu4PQOi2ATUOXruabANnSSNLjWPUWyfCxzVCB+sx4jz3nlr6Ww6EnFDTN11LZ2FBtaHNGhznMcofVmOV/XqMiOqtLhKxTA3oKyhl3LMSST2RgeoLJKhHZiltsqs/EQIX74znXPPIiyHZfNc3gn3yV6lAqaK5zwjhPMS0qk6OgKW3bK7yTsnWI1XPCPr4UjXNkCCNADfeJYwxbTJ7vUnslMMSJf4N/fPXuYM577V2ND570wj8TgmEJQRL6dKh6uJaP4vbXg3l4k6DuO5YTBrvC+w1lcKLhxnpJrn8u4gBGP8zzzTHVd3IIrxOTYllBw3Tey5RBq5704uRHHKf3kkq2bOfzwIEDbxBT/OKDpe0trx0LCpGoEGHzFrc0kd9pQUAS1T/J3nq9gyFKcYm4jX7pOcr2rDzZZ4mJvsNxTRKoVvCcvPxC020umYjdNPcTkax4Kb7j++BFsmLUmBGaRGXUWCCZaoCQhkJbXYXrlrfWCWK9bt01cZPNRJOAo2sEHfW4eecwDrgNQINRH5fGe0RxNpS4cEc5Yw/vxrxCVIRHPOQkVPEm8fpej6Q0NyMI1EjIzn88iabybsn6wunVDJSRhf2qEnBANWSqaV7F3qhiZzwDSzxGeWKKnTQjoSjgin6Ai3ro8OcxJT/ByvGEnTO0DY792q+aJcA+z0shDHZLC482iVYw9/X6dKBA5RuDouddOflTT3rEHL7yPf3WXJKocwiU+x1n4/lrL+0JWVNZwaabbbdevJdlUDKuN130XeWI2bgTTuce8WaQvAJn5i9NPiJG63d+rM5oHPzHHzDuS040yZTQd53LOuwxqwXNkMHphP1Cz/JnMW4TI2fUnIKVOGY+Nl9XB4E5XlfiYxl2VTE9TgNVNbQBTJD1rOysvu47yq0ScS3nulXybNzT+1bo+kHceklPAMZFo1LwxuCh51oReqd8ZjlG4zZC1ZalUZgTmQZJR1GcINfNDNhDrgrhqc2atZ6o/UKNuAIrCJwamw1ryg0uM+dV0y91D6++qh9F3U37ZxvjCRRrqWXkr8/n/oyyfejNVT6bssz/8WFyU+bw7belU6s2RMdScpSWy9NfTJ2W6nTqtPQcNBWUb1/p4G3fpKQbTJLYbptMMklAHOJeGmLW02GjtFxQcr2N/2Zh+FePysRer+h+2rUg+rKemClJ9cLV9R4StIp94ej1T2tk1FCa+Ppv4piwY+YnuecO1DyW4nqe/71flK3lY7Gl8+kJ/L5YHlA3LDpqHYMaOuFmY4OcqJse7ZUM726BZjZOpSgkXONmP3wKF/9Glyjo6AY7mmw7p8juP40mnB32VJ9CsyDhlJEm8zZynN2x7HJYkOiQ6F/LX4I+oQ3NijhUe0yj+Ch4Hizv2VV56Av9BVLsWW1gjnMLUIQSLqlMP5D1rGz0fpVpbvH/1vAKsDvcHLQUoRzpAR7yj5cGfWkLmACahPaUdzTKl5wgPKAKsbiWxGl9LJa4xzJMh6lI7ZbZC+SRBFNA9X9zvTgNqGuFfDDy2sKfj1tCZ6evjeliYxHuY0c1MKlLd3oDV5xf9EDykJ0b0E8ZXWglpvqzG0e2t3bU1xVi3HOifeUwSK+oko6VZgyTCnmU5dubyXy/CkFx5Q1Za6td+DrdlxLt2rketqxdE3cDQbGoWMP8A8tIqVOmVP/hobZAAgGKJZ6HwrMC5XPbSgjxHp7tX4pUvNOOGwSvSKWiga/FFi9x+qQgznfCWAiiqHTtE/lFyJRdPEDNBe9iRtfA0B86bM1IPfVjW2fdt5l79mVd0AvMCXVcKjlWv7sQNNBagnc74e8+fa8CPzjAhyrZWfzynAbVA01E+k2ZwDhBchHlvpmDNEzxBfSpFRgKtWTsi6LH98/FrlV3xZWxIj+f82iPowLw5XIBYS+/wQzIa2PEtsRfWP0Sc3jfmNLVU/SaTHk5RljeI6oiGW5uQyLitbQGJuzDUB/kN9oMeJRv/G8p2e30s9ufBqVWRbvl6q7dNwmWMZ893lRe90k+vdDUVwp/sNuY1n2LWCUVICPyZB/W4cazu3qA2VViXMnQ2qfeV44th5af1guc1CfpT3xkDnNx5JZJ3FX2urZPsW6+Hp4c/lL/R3XAhRY+Aax2cMXndQ+aNtjjtbPjoGUz1JlSpi5DHyzsekkcDgOUqbDRkqYZYAF43zSsMJj9ryEPp/Mb03XeUYGFB7I3DBuRC9rQgZH8s7Lr6PIRNGnhJEyiluM5/bVocMU8/dw79dh+PRfpPoN+HzgGEuFfsXbAMc9una+FhShU4WOei1uXzA33+1+UPeYNbPyTOVj4ZSzZFRJMso9PlpXcChrI+4krCDrUMzc5am2ST+gkunzeCiQP0AyZS45yzvk1ufDD+MBjreNI2dckCXlTbpqz09/LuFoz8+LCjzwy8Vhzn5b3lFt1eEo8Ob5byQ/n+xJZXLOAXx4WJ7pTFMlOQLU4rN6IiZ91YWHKWB09V2i1bGeZNUk4Z8LW7zjHxdol5JSzf46IPsVaM9+QfeFiLFuDlPC8VLdsmgIsy5UlXZLTaKZbEEbjYua12EmFOWyJqyYjp78mJS+bmZ4mlzjMjUnGukQdPQHJqNQV2qynUa1tMW+i01iwCJv4TTi3ES0VR3UpJ4VVOH2TrjLdO92v4ugU7+7NUOWgzjMGZe0t6bicQ5qNGr8oFoQZrnyzCBwtedY/SYJctcu9vRgPAO4SBPAybquLQs5qx/EupWOfFInCBnFiIcUfe93AfnFRyz2mv0vbPd6XbfPStnAqhWLquhVsGlHxMSWjQSMKWKPL399tSA9B1Pi+XDT9226/cfqMLUXWA3xGDiIqtcnbXNgt/h5KTl3D9V7qKJJl2SdEBG6TAR+0vCA9LjPg8yJ7PhTmuAzOJSTYunhx+P+jXm/HGAgTQD0qJQlsPT/3NaJFIfsF6dbCqpgeFLDQmzG/DX8e2mC9JsneY+W16i2u6gJv/P//4/lntoepX0BgA=';
+
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        reader: $('reader'), page: $('page'), stage: $('stage'), title: $('top-title'), topProgress: $('top-progress'),
+        fill: $('progress-fill'), footerPage: $('footer-page'), prev: $('prev'), next: $('next'), footerPrev: $('footer-prev'), footerNext: $('footer-next'),
+        tocBackdrop: $('toc-backdrop'), toc: $('toc'), tocList: $('toc-list'), tocOpen: $('toc-open'), tocClose: $('toc-close'), theme: $('theme-toggle')
+      };
+      let book = null;
+      let pageIndex = 0;
+      let locked = false;
+      let touchStart = null;
+
+      function inlineMarkup(text) {
+        const fragment = document.createDocumentFragment();
+        const re = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
+        let last = 0, match;
+        while ((match = re.exec(text)) !== null) {
+          if (match.index > last) fragment.append(document.createTextNode(text.slice(last, match.index)));
+          const token = match[0];
+          const node = document.createElement(token.startsWith('**') ? 'strong' : 'em');
+          node.textContent = token.slice(token.startsWith('**') ? 2 : 1, token.startsWith('**') ? -2 : -1);
+          fragment.append(node);
+          last = match.index + token.length;
+        }
+        if (last < text.length) fragment.append(document.createTextNode(text.slice(last)));
+        return fragment;
+      }
+
+      function addText(parent, tag, text, className) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        node.textContent = text || '';
+        parent.append(node);
+        return node;
+      }
+
+      function renderCover() {
+        els.page.className = 'page is-cover';
+        els.page.replaceChildren();
+        const cover = document.createElement('div'); cover.className = 'cover';
+        const ornament = document.createElement('div'); ornament.className = 'cover-ornament'; ornament.setAttribute('aria-hidden', 'true'); cover.append(ornament);
+        addText(cover, 'p', book.subtitle || '', 'cover-kicker');
+        addText(cover, 'h1', book.title, 'cover-title');
+        const rule = document.createElement('div'); rule.className = 'cover-rule'; rule.setAttribute('aria-hidden', 'true'); cover.append(rule);
+        addText(cover, 'p', book.author ? 'by ' + book.author : '', 'cover-author');
+        addText(cover, 'p', `${book.chapters.length} chapters`, 'cover-note');
+        const begin = addText(cover, 'button', 'Begin reading', 'cover-cta');
+        begin.type = 'button'; begin.addEventListener('click', () => goTo(1));
+        addText(cover, 'p', 'Use ← →, Page Up/Down, Home/End, or swipe to turn pages.', 'cover-hint');
+        els.page.append(cover);
+      }
+
+      function renderChapter(chapter) {
+        els.page.className = 'page is-chapter';
+        els.page.replaceChildren();
+        const wrap = document.createElement('div'); wrap.className = 'chapter';
+        const head = document.createElement('header'); head.className = 'chapter-head';
+        addText(head, 'p', `Chapter ${chapter.number}`, 'chapter-label');
+        addText(head, 'h1', chapter.title, 'chapter-title');
+        const meta = [chapter.pov, chapter.date].filter(Boolean).join(' · ');
+        if (meta) addText(head, 'p', meta, 'chapter-meta');
+        wrap.append(head);
+        const body = document.createElement('div'); body.className = 'chapter-body';
+        (chapter.paragraphs || []).forEach((paragraph, i) => {
+          const p = document.createElement('p');
+          if (i === 0) p.className = 'first-paragraph';
+          p.append(inlineMarkup(paragraph)); body.append(p);
+        });
+        wrap.append(body);
+        addText(wrap, 'p', '◆', 'chapter-end');
+        els.page.append(wrap);
+      }
+
+      function render() {
+        if (!book) return;
+        if (pageIndex === 0) renderCover(); else renderChapter(book.chapters[pageIndex - 1]);
+        const total = book.chapters.length + 1;
+        const percent = total === 1 ? 0 : Math.round(pageIndex / (total - 1) * 100);
+        els.title.textContent = book.title;
+        els.topProgress.textContent = pageIndex === 0 ? `Cover · ${percent}%` : `Chapter ${book.chapters[pageIndex - 1].number} of ${book.chapters.length} · ${percent}%`;
+        els.fill.style.width = percent + '%';
+        els.footerPage.textContent = `${pageIndex + 1} / ${total}`;
+        [els.prev, els.footerPrev].forEach(b => b.disabled = pageIndex === 0);
+        [els.next, els.footerNext].forEach(b => b.disabled = pageIndex === total - 1);
+        els.page.scrollTop = 0;
+        document.title = pageIndex === 0 ? book.title : `${book.chapters[pageIndex - 1].title} — ${book.title}`;
+        buildToc();
+      }
+
+      function goTo(target) {
+        if (!book || locked) return;
+        const max = book.chapters.length;
+        const next = Math.max(0, Math.min(max, target));
+        if (next === pageIndex) return;
+        locked = true;
+        els.stage.classList.remove('turn-next', 'turn-prev');
+        void els.stage.offsetWidth;
+        els.stage.classList.add(next > pageIndex ? 'turn-next' : 'turn-prev');
+        window.setTimeout(() => {
+          pageIndex = next; render(); locked = false;
+          els.page.focus({ preventScroll: true });
+        }, 220);
+      }
+
+      function buildToc() {
+        if (!book) return;
+        els.tocList.replaceChildren();
+        const items = [{ number: '—', title: 'Cover', meta: book.subtitle || '', page: 0 }].concat(book.chapters.map(ch => ({ number: ch.number, title: ch.title, meta: [ch.pov, ch.date].filter(Boolean).join(' · '), page: ch.number })));
+        items.forEach(item => {
+          const button = document.createElement('button'); button.type = 'button'; button.className = 'toc-item' + (item.page === pageIndex ? ' is-active' : '');
+          const number = addText(button, 'span', item.number, 'toc-num');
+          const text = document.createElement('span');
+          addText(text, 'strong', item.title);
+          if (item.meta) addText(text, 'em', item.meta);
+          button.append(text); button.addEventListener('click', () => { closeToc(); goTo(item.page); }); els.tocList.append(button);
+        });
+      }
+
+      function openToc() { els.tocBackdrop.hidden = false; els.tocOpen.setAttribute('aria-expanded', 'true'); els.tocClose.focus(); }
+      function closeToc() { els.tocBackdrop.hidden = true; els.tocOpen.setAttribute('aria-expanded', 'false'); els.tocOpen.focus(); }
+
+      async function decodeChunks() {
+        const parts = [];
+        const batchSize = 8;
+        for (let start = 0; start < CHUNK_COUNT; start += batchSize) {
+          const slice = Array.from({ length: Math.min(batchSize, CHUNK_COUNT - start) }, (_, j) => start + j);
+          const responses = await Promise.all(slice.map(i => fetch(`${CHUNK_BASE}${String(i).padStart(3, '0')}.txt`, { cache: 'force-cache' })));
+          const failed = responses.findIndex(r => !r.ok);
+          if (failed !== -1) throw new Error(`Payload chunk ${String(slice[failed]).padStart(3, '0')} failed (${responses[failed].status})`);
+          parts.push(...(await Promise.all(responses.map(r => r.text()))));
+          els.topProgress.textContent = `Loading book… ${Math.min(start + batchSize, CHUNK_COUNT)}/${CHUNK_COUNT}`;
+        }
+        const b64 = parts.join('').replace(/\s/g, '');
+        const binary = atob(b64); const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return JSON.parse(await new Response(stream).text());
+      }
+
+      async function loadEmbedded() {
+        const binary = atob(EMBEDDED_BOOK_GZ_B64);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress the reader payload');
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return JSON.parse(await new Response(stream).text());
+      }
+      async function loadBook() {
+        try {
+          if (typeof EMBEDDED_BOOK_GZ_B64 === 'string' && EMBEDDED_BOOK_GZ_B64.length > 100) {
+            book = await loadEmbedded();
+          } else {
+            throw new Error('no embed');
+          }
+        } catch (embedError) {
+          try {
+            let response = await fetch('./book.json', { cache: 'no-cache' });
+            if (!response.ok) throw new Error('local book.json unavailable');
+            book = await response.json();
+          } catch (localError) {
+            try { book = await decodeChunks(); }
+            catch (chunkError) {
+              throw new Error('Could not load the book (embed/local/chunks all failed).');
+            }
+          }
+        }
+        if (!book || !Array.isArray(book.chapters) || book.chapters.length !== 32) throw new Error('Book data is incomplete: expected 32 chapters.');
+        render();
+      }
+
+      els.prev.addEventListener('click', () => goTo(pageIndex - 1)); els.next.addEventListener('click', () => goTo(pageIndex + 1));
+      els.footerPrev.addEventListener('click', () => goTo(pageIndex - 1)); els.footerNext.addEventListener('click', () => goTo(pageIndex + 1));
+      els.tocOpen.addEventListener('click', openToc
