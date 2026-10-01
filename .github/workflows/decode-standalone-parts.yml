@@ -37,6 +37,10 @@ jobs:
               for part, items in sorted(parts.items()):
                   items.sort()
                   hexdata = ''.join(c for _, c in items)
+                  # Only decode when we have a complete payload (>= 14000 bytes raw)
+                  if len(hexdata) < 28000:
+                      print('skip incomplete', part, 'hex_chars', len(hexdata), 'chunks', len(items))
+                      continue
                   raw = bytes.fromhex(hexdata)
                   out = outdir / f'{part}.txt'
                   out.write_bytes(raw)
