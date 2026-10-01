@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Last Dance Before the Altar</title>
   <style>
-    body { margin:0; min-height:100dvh; display:grid; place-items:center; background:#0f0e0c; color:#ebe4d6; font-family:Georgia,serif; }
+    body { margin:0; min-height:100dvh; display:grid; place-items:center; background:#0f0e0c; color:#f5f0e6; font-family:Georgia,serif; }
     .box { text-align:center; padding:2rem; }
     .spinner { width:1.5rem; height:1.5rem; border:2px solid rgba(232,220,196,.2); border-top-color:#c9a46c; border-radius:50%; margin:0 auto 1rem; animation:spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -27,7 +27,7 @@
       const parts = [];
       for (let i = 0; i < COUNT; i++) {
         status.querySelector('p').textContent = 'Loading Last Dance… ' + (i + 1) + '/' + COUNT;
-        const r = await fetch(BASE + String(i).padStart(2, '0') + '.txt?v=2', { cache: 'no-store' });
+        const r = await fetch(BASE + String(i).padStart(2, '0') + '.txt?v=3', { cache: 'no-store' });
         if (!r.ok) throw new Error('Missing part ' + i + ' (' + r.status + ')');
         parts.push(await r.text());
       }
