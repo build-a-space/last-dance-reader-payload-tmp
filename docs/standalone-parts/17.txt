@@ -1,4 +1,5 @@
-iled = responses.findIndex(r => !r.ok);
+     const responses = await Promise.all(slice.map(i => fetch(`${CHUNK_BASE}${String(i).padStart(3, '0')}.txt`, { cache: 'force-cache' })));
+          const failed = responses.findIndex(r => !r.ok);
           if (failed !== -1) throw new Error(`Payload chunk ${String(slice[failed]).padStart(3, '0')} failed (${responses[failed].status})`);
           parts.push(...(await Promise.all(responses.map(r => r.text()))));
           els.topProgress.textContent = `Loading book… ${Math.min(start + batchSize, CHUNK_COUNT)}/${CHUNK_COUNT}`;
