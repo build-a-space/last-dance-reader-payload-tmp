@@ -8,28 +8,37 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Concat hex chunks and decode to txt
+      - name: Decode hex payloads to txt
         run: |
           set -euo pipefail
           python3 << 'PY'
           from pathlib import Path
           import re
-          root = Path('docs/standalone-parts/_hex')
           outdir = Path('docs/standalone-parts')
-          parts = {}
-          for f in sorted(root.glob('*.hex.*')):
-              m = re.match(r'(\d+)\.hex\.(\d+)$', f.name)
-              if not m:
-                  continue
-              part, n = m.group(1), int(m.group(2))
-              parts.setdefault(part, []).append((n, f.read_text().strip()))
-          for part, items in sorted(parts.items()):
-              items.sort()
-              hexdata = ''.join(c for _, c in items)
-              raw = bytes.fromhex(hexdata)
+          # Full .hex files
+          for f in sorted(outdir.glob('*.hex')):
+              part = f.stem
+              raw = bytes.fromhex(f.read_text().strip())
               out = outdir / f'{part}.txt'
               out.write_bytes(raw)
-              print(part, 'bytes', len(raw), 'chars_utf8', len(raw.decode('utf-8')))
+              print('full', part, 'bytes', len(raw))
+          # Chunked _hex/N.hex.MM
+          root = Path('docs/standalone-parts/_hex')
+          if root.exists():
+              parts = {}
+              for f in sorted(root.glob('*.hex.*')):
+                  m = re.match(r'(\d+)\.hex\.(\d+)$', f.name)
+                  if not m:
+                      continue
+                  part, n = m.group(1), int(m.group(2))
+                  parts.setdefault(part, []).append((n, f.read_text().strip()))
+              for part, items in sorted(parts.items()):
+                  items.sort()
+                  hexdata = ''.join(c for _, c in items)
+                  raw = bytes.fromhex(hexdata)
+                  out = outdir / f'{part}.txt'
+                  out.write_bytes(raw)
+                  print('chunked', part, 'bytes', len(raw))
           PY
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -37,6 +46,6 @@ jobs:
           if git diff --cached --quiet; then
             echo no changes
           else
-            git commit -m "Decode standalone-parts hex chunks to txt"
+            git commit -m "Decode standalone-parts hex payloads to txt"
             git push
           fi
