@@ -1,6 +1,10 @@
 name: decode-standalone-parts
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'docs/standalone-parts/_hex/**'
+      - 'docs/standalone-parts/*.hex'
 jobs:
   decode:
     runs-on: ubuntu-latest
@@ -15,14 +19,12 @@ jobs:
           from pathlib import Path
           import re
           outdir = Path('docs/standalone-parts')
-          # Full .hex files
           for f in sorted(outdir.glob('*.hex')):
               part = f.stem
               raw = bytes.fromhex(f.read_text().strip())
               out = outdir / f'{part}.txt'
               out.write_bytes(raw)
               print('full', part, 'bytes', len(raw))
-          # Chunked _hex/N.hex.MM
           root = Path('docs/standalone-parts/_hex')
           if root.exists():
               parts = {}
@@ -38,7 +40,7 @@ jobs:
                   raw = bytes.fromhex(hexdata)
                   out = outdir / f'{part}.txt'
                   out.write_bytes(raw)
-                  print('chunked', part, 'bytes', len(raw))
+                  print('chunked', part, 'bytes', len(raw), 'md5', __import__('hashlib').md5(raw).hexdigest())
           PY
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
