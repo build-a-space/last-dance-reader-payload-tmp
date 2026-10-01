@@ -3,209 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f0e0c">
-  <meta name="description" content="Last Dance Before the Altar — a static ebook reader.">
   <title>Last Dance Before the Altar</title>
-  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body { margin:0; min-height:100dvh; display:grid; place-items:center; background:#0f0e0c; color:#ebe4d6; font-family:Georgia,serif; }
+    .box { text-align:center; padding:2rem; }
+    .spinner { width:1.5rem; height:1.5rem; border:2px solid rgba(232,220,196,.2); border-top-color:#c9a46c; border-radius:50%; margin:0 auto 1rem; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .err { color:#f0b4b4; max-width:28rem; line-height:1.5; }
+  </style>
 </head>
 <body>
-  <div class="reader" id="reader" aria-live="polite">
-    <header class="topbar">
-      <button class="icon-button" id="toc-open" type="button" aria-label="Open table of contents" aria-controls="toc" aria-expanded="false">☰</button>
-      <div class="topbar-meta">
-        <span class="book-title" id="top-title">Loading…</span>
-        <span class="book-progress" id="top-progress">Preparing your book</span>
-      </div>
-      <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle reading contrast">◐</button>
-    </header>
-    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
-
-    <main class="stage" id="stage">
-      <button class="nav-button nav-prev" id="prev" type="button" aria-label="Previous page">‹</button>
-      <article class="page is-cover" id="page" tabindex="-1">
-        <div class="loading"><span class="spinner" aria-hidden="true"></span><p>Opening the book…</p></div>
-      </article>
-      <button class="nav-button nav-next" id="next" type="button" aria-label="Next page">›</button>
-    </main>
-
-    <footer class="footer">
-      <button class="footer-button" id="footer-prev" type="button">Previous</button>
-      <span class="footer-page" id="footer-page">—</span>
-      <button class="footer-button" id="footer-next" type="button">Next</button>
-    </footer>
+  <div class="box" id="status">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Loading Last Dance…</p>
   </div>
-
-  <div class="toc-backdrop" id="toc-backdrop" hidden>
-    <aside class="toc" id="toc" aria-label="Table of contents">
-      <div class="toc-head"><h2>Contents</h2><button class="icon-button" id="toc-close" type="button" aria-label="Close table of contents">×</button></div>
-      <div id="toc-list"></div>
-    </aside>
-  </div>
-
   <script>
-    (() => {
-      'use strict';
-      const CHUNK_BASE = 'https://raw.githubusercontent.com/build-a-space/last-dance-reader-payload-tmp/main/b64/';
-      const CHUNK_COUNT = 55;
-      const $ = (id) => document.getElementById(id);
-      const els = {
-        reader: $('reader'), page: $('page'), stage: $('stage'), title: $('top-title'), topProgress: $('top-progress'),
-        fill: $('progress-fill'), footerPage: $('footer-page'), prev: $('prev'), next: $('next'), footerPrev: $('footer-prev'), footerNext: $('footer-next'),
-        tocBackdrop: $('toc-backdrop'), toc: $('toc'), tocList: $('toc-list'), tocOpen: $('toc-open'), tocClose: $('toc-close'), theme: $('theme-toggle')
-      };
-      let book = null;
-      let pageIndex = 0;
-      let locked = false;
-      let touchStart = null;
-
-      function inlineMarkup(text) {
-        const fragment = document.createDocumentFragment();
-        const re = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
-        let last = 0, match;
-        while ((match = re.exec(text)) !== null) {
-          if (match.index > last) fragment.append(document.createTextNode(text.slice(last, match.index)));
-          const token = match[0];
-          const node = document.createElement(token.startsWith('**') ? 'strong' : 'em');
-          node.textContent = token.slice(token.startsWith('**') ? 2 : 1, token.startsWith('**') ? -2 : -1);
-          fragment.append(node);
-          last = match.index + token.length;
-        }
-        if (last < text.length) fragment.append(document.createTextNode(text.slice(last)));
-        return fragment;
+  (async () => {
+    const BASE = 'https://cdn.jsdelivr.net/gh/build-a-space/last-dance-reader-payload-tmp@main/docs/standalone-parts/';
+    const COUNT = 18;
+    const status = document.getElementById('status');
+    try {
+      const parts = [];
+      for (let i = 0; i < COUNT; i++) {
+        status.querySelector('p').textContent = 'Loading Last Dance… ' + (i + 1) + '/' + COUNT;
+        const r = await fetch(BASE + String(i).padStart(2, '0') + '.txt', { cache: 'force-cache' });
+        if (!r.ok) throw new Error('Missing part ' + i + ' (' + r.status + ')');
+        parts.push(await r.text());
       }
-
-      function addText(parent, tag, text, className) {
-        const node = document.createElement(tag);
-        if (className) node.className = className;
-        node.textContent = text || '';
-        parent.append(node);
-        return node;
-      }
-
-      function renderCover() {
-        els.page.className = 'page is-cover';
-        els.page.replaceChildren();
-        const cover = document.createElement('div'); cover.className = 'cover';
-        const ornament = document.createElement('div'); ornament.className = 'cover-ornament'; ornament.setAttribute('aria-hidden', 'true'); cover.append(ornament);
-        addText(cover, 'p', book.subtitle || '', 'cover-kicker');
-        addText(cover, 'h1', book.title, 'cover-title');
-        const rule = document.createElement('div'); rule.className = 'cover-rule'; rule.setAttribute('aria-hidden', 'true'); cover.append(rule);
-        addText(cover, 'p', book.author ? 'by ' + book.author : '', 'cover-author');
-        addText(cover, 'p', `${book.chapters.length} chapters`, 'cover-note');
-        const begin = addText(cover, 'button', 'Begin reading', 'cover-cta');
-        begin.type = 'button'; begin.addEventListener('click', () => goTo(1));
-        addText(cover, 'p', 'Use ← →, Page Up/Down, Home/End, or swipe to turn pages.', 'cover-hint');
-        els.page.append(cover);
-      }
-
-      function renderChapter(chapter) {
-        els.page.className = 'page is-chapter';
-        els.page.replaceChildren();
-        const wrap = document.createElement('div'); wrap.className = 'chapter';
-        const head = document.createElement('header'); head.className = 'chapter-head';
-        addText(head, 'p', `Chapter ${chapter.number}`, 'chapter-label');
-        addText(head, 'h1', chapter.title, 'chapter-title');
-        const meta = [chapter.pov, chapter.date].filter(Boolean).join(' · ');
-        if (meta) addText(head, 'p', meta, 'chapter-meta');
-        wrap.append(head);
-        const body = document.createElement('div'); body.className = 'chapter-body';
-        (chapter.paragraphs || []).forEach((paragraph, i) => {
-          const p = document.createElement('p');
-          if (i === 0) p.className = 'first-paragraph';
-          p.append(inlineMarkup(paragraph)); body.append(p);
-        });
-        wrap.append(body);
-        addText(wrap, 'p', '◆', 'chapter-end');
-        els.page.append(wrap);
-      }
-
-      function render() {
-        if (!book) return;
-        if (pageIndex === 0) renderCover(); else renderChapter(book.chapters[pageIndex - 1]);
-        const total = book.chapters.length + 1;
-        const percent = total === 1 ? 0 : Math.round(pageIndex / (total - 1) * 100);
-        els.title.textContent = book.title;
-        els.topProgress.textContent = pageIndex === 0 ? `Cover · ${percent}%` : `Chapter ${book.chapters[pageIndex - 1].number} of ${book.chapters.length} · ${percent}%`;
-        els.fill.style.width = percent + '%';
-        els.footerPage.textContent = `${pageIndex + 1} / ${total}`;
-        [els.prev, els.footerPrev].forEach(b => b.disabled = pageIndex === 0);
-        [els.next, els.footerNext].forEach(b => b.disabled = pageIndex === total - 1);
-        els.page.scrollTop = 0;
-        document.title = pageIndex === 0 ? book.title : `${book.chapters[pageIndex - 1].title} — ${book.title}`;
-        buildToc();
-      }
-
-      function goTo(target) {
-        if (!book || locked) return;
-        const max = book.chapters.length;
-        const next = Math.max(0, Math.min(max, target));
-        if (next === pageIndex) return;
-        locked = true;
-        els.stage.classList.remove('turn-next', 'turn-prev');
-        void els.stage.offsetWidth;
-        els.stage.classList.add(next > pageIndex ? 'turn-next' : 'turn-prev');
-        window.setTimeout(() => {
-          pageIndex = next; render(); locked = false;
-          els.page.focus({ preventScroll: true });
-        }, 220);
-      }
-
-      function buildToc() {
-        if (!book) return;
-        els.tocList.replaceChildren();
-        const items = [{ number: '—', title: 'Cover', meta: book.subtitle || '', page: 0 }].concat(book.chapters.map(ch => ({ number: ch.number, title: ch.title, meta: [ch.pov, ch.date].filter(Boolean).join(' · '), page: ch.number })));
-        items.forEach(item => {
-          const button = document.createElement('button'); button.type = 'button'; button.className = 'toc-item' + (item.page === pageIndex ? ' is-active' : '');
-          const number = addText(button, 'span', item.number, 'toc-num');
-          const text = document.createElement('span');
-          addText(text, 'strong', item.title);
-          if (item.meta) addText(text, 'em', item.meta);
-          button.append(text); button.addEventListener('click', () => { closeToc(); goTo(item.page); }); els.tocList.append(button);
-        });
-      }
-
-      function openToc() { els.tocBackdrop.hidden = false; els.tocOpen.setAttribute('aria-expanded', 'true'); els.tocClose.focus(); }
-      function closeToc() { els.tocBackdrop.hidden = true; els.tocOpen.setAttribute('aria-expanded', 'false'); els.tocOpen.focus(); }
-
-      async function decodeChunks() {
-        const responses = await Promise.all(Array.from({ length: CHUNK_COUNT }, (_, i) => fetch(`${CHUNK_BASE}${String(i).padStart(3, '0')}.txt`, { cache: 'force-cache' })));
-        if (responses.some(r => !r.ok)) throw new Error('Reader payload chunks unavailable');
-        const b64 = (await Promise.all(responses.map(r => r.text()))).join('').replace(/\s/g, '');
-        const binary = atob(b64); const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-        if (!(7DecompressionStream7 in window)) throw new Error('This browser cannot decompress the reader payload');
-        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(7gzip7));
-        return JSON.parse(await new Response(stream).text());
-      }
-
-      async function loadBook() {
-        try {
-          let response = await fetch(7./book.json7, { cache: 7no-cache7 });
-          if (!response.ok) throw new Error(7local book.json unavailable7);
-          book = await response.json();
-        } catch (localError) {
-          try { book = await decodeChunks(); }
-          catch (chunkError) { throw new Error(7Could not load book.json or the GitHub payload chunks.7); }
-        }
-        if (!book || !Array.isArray(book.chapters) || book.chapters.length !== 32) throw new Error(7Book data is incomplete: expected 32 chapters.7);
-        render();
-      }
-
-      els.prev.addEventListener(7click7, () => goTo(pageIndex - 1)); els.next.addEventListener(7click7, () => goTo(pageIndex + 1));
-      els.footerPrev.addEventListener(7click7, () => goTo(pageIndex - 1)); els.footerNext.addEventListener(7click7, () => goTo(pageIndex + 1));
-      els.tocOpen.addEventListener(7click7, openToc); els.tocClose.addEventListener(7click7, closeToc); els.tocBackdrop.addEventListener(7click7, e => { if (e.target === els.tocBackdrop) closeToc(); });
-      els.theme.addEventListener(7click7, () => document.body.classList.toggle(7high-contrast7));
-      window.addEventListener(7keydown7, e => {
-        if (!els.tocBackdrop.hidden) { if (e.key === 7Escape7) closeToc(); return; }
-        if ([7INPUT7, 7TEXTAREA7, 7BUTTON7].includes(document.activeElement?.tagName) && e.key !== 7Escape7) return;
-        if (e.key === 7ArrowRight7 || e.key === 7PageDown7) { e.preventDefault(); goTo(pageIndex + 1); }
-        else if (e.key === 7ArrowLeft7 || e.key === 7PageUp7) { e.preventDefault(); goTo(pageIndex - 1); }
-        else if (e.key === 7Home7) { e.preventDefault(); goTo(0); }
-        else if (e.key === 7End7 && book) { e.preventDefault(); goTo(book.chapters.length); }
-      });
-      els.stage.addEventListener(7touchstart7, e => { const t = e.changedTouches[0]; touchStart = { x: t.clientX, y: t.clientY }; }, { passive: true });
-      els.stage.addEventListener(7touchend7, e => { if (!touchStart) return; const t = e.changedTouches[0], dx = t.clientX - touchStart.x, dy = t.clientY - touchStart.y; touchStart = null; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) goTo(pageIndex + (dx < 0 ? 1 : -1)); }, { passive: true });
-      loadBook().catch(error => { els.page.className = 7page is-cover7; els.page.innerHTML = 7<div class="error"><h1>Unable to open the book</h1><p></p><button class="cover-cta" type="button" onclick="location.reload()">Try again</button></div>7; els.page.querySelector(7p7).textContent = error.message; els.topProgress.textContent = 7Load error7; });
-    })();
+      const html = parts.join('');
+      document.open();
+      document.write(html);
+      document.close();
+    } catch (e) {
+      status.innerHTML = '<p class="err">Could not load the book from GitHub.<br>' + (e && e.message ? e.message : e) + '<br><br>Download the standalone HTML from Drive and open it locally.</p>';
+    }
+  })();
   </script>
 </body>
 </html>
