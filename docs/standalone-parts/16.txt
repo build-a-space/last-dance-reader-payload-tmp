@@ -11,23 +11,31 @@ G8M2fbGnCLElGqjNM1NPjQinqk+cz0Bpw9qYnVbCWblzUw8QOCQCWK3TjmbNaxCwrAeGXJkqPJk2XNtR
       let locked = false;
       let touchStart = null;
 
-      function inlineMarkup(text) {
-        const fragment = document.createDocumentFragment();
-        const re = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
-        let last = 0, match;
-        while ((match = re.exec(text)) !== null) {
-          if (match.index > last) fragment.append(document.createTextNode(text.slice(last, match.index)));
-          const token = match[0];
-          const node = document.createElement(token.startsWith('**') ? 'strong' : 'em');
-          node.textContent = token.slice(token.startsWith('**') ? 2 : 1, token.startsWith('**') ? -2 : -1);
-          fragment.append(node);
-          last = match.index + token.length;
-        }
-        if (last < text.length) fragment.append(document.createTextNode(text.slice(last)));
-        return fragment;
-      }
 
-      function addText(parent, tag, text, className) {
+      const STORAGE_KEY = 'last-dance-reader-v1';
+      function loadPrefs() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return { pageIndex: 0, highContrast: false };
+          const data = JSON.parse(raw);
+          return {
+            pageIndex: Number.isFinite(data.pageIndex) ? data.pageIndex : 0,
+            highContrast: !!data.highContrast
+          };
+        } catch (e) {
+          return { pageIndex: 0, highContrast: false };
+        }
+      }
+      function savePrefs() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            pageIndex,
+            highContrast: document.body.classList.contains('high-contrast')
+          }));
+        } catch (e) {}
+      }
+      (function restoreThemeEarly() {
+        ent, tag, text, className) {
         const node = document.createElement(tag);
         if (className) node.className = className;
         node.textContent = text || '';
