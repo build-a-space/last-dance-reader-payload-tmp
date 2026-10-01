@@ -1,0 +1,59 @@
+name: reader-ux-patch-parts
+on:
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch part 00 ink colors (same-length)
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path('docs/standalone-parts/00.txt')
+          t = p.read_text(encoding='utf-8')
+          n = t.replace('--ink:#ebe4d6', '--ink:#f5f0e6').replace('--muted:#a89f8e', '--muted:#c4bba8')
+          assert len(n.encode('utf-8')) == len(t.encode('utf-8')), (len(n.encode()), len(t.encode()))
+          p.write_text(n, encoding='utf-8')
+          print('00 patched', '--ink:#f5f0e6' in n)
+          PY
+      - name: Decode hex payloads for 00/16 if present
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          import re, hashlib
+          outdir = Path('docs/standalone-parts')
+          root = outdir / '_hex'
+          for f in sorted(outdir.glob('*.hex')):
+              part = f.stem
+              raw = bytes.fromhex(f.read_text().strip())
+              (outdir / f'{part}.txt').write_bytes(raw)
+              print('full', part, len(raw), hashlib.sha256(raw).hexdigest()[:12])
+          if root.exists():
+              parts = {}
+              for f in sorted(root.glob('*.hex.*')):
+                  m = re.match(r'(\d+)\.hex\.(\d+)$', f.name)
+                  if not m:
+                      continue
+                  part, n = m.group(1), int(m.group(2))
+                  parts.setdefault(part, []).append((n, f.read_text().strip()))
+              for part, items in sorted(parts.items()):
+                  items.sort()
+                  hexdata = ''.join(c for _, c in items)
+                  if len(hexdata) < 28000:
+                      print('skip incomplete', part, len(hexdata))
+                      continue
+                  raw = bytes.fromhex(hexdata)
+                  (outdir / f'{part}.txt').write_bytes(raw)
+                  print('chunked', part, len(raw), hashlib.sha256(raw).hexdigest()[:12])
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/standalone-parts/*.txt
+          git diff --cached --quiet && echo no changes && exit 0
+          git commit -m "Reader UX: apply brighter ink + decode hex part 16"
+          git push
